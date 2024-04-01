@@ -12,7 +12,7 @@ glView::~glView()
 
 void glView::initializeGL()
 {
-
+    glEnable(GL_DEPTH_TEST);
 }
 
 
@@ -30,7 +30,7 @@ float arr[] = {0, 0, -1.5, 1, 0, -1.5, 0, 1, -1.5};
 void glView::paintGL()
 {
     glClearColor(0.25, 0.1, 0.5, 0);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
