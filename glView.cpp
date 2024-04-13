@@ -70,7 +70,6 @@ void glView::mouseMoveEvent(QMouseEvent* mo) {
 }
 
 
-
 // Функция отрисовки куба
 void glView::drawCube(float a)
 {
