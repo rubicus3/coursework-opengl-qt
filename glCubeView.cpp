@@ -1,23 +1,23 @@
-#include "glView.h"
+#include "glCubeView.h"
 
-glView::glView(QWidget *parent)
+glCubeView::glCubeView(QWidget *parent)
     : QOpenGLWidget(parent)
 {
 }
 
-glView::~glView()
+glCubeView::~glCubeView()
 {
 }
 
 
-void glView::initializeGL()
+void glCubeView::initializeGL()
 {
     // Включаем буфер глубины, для корректной проекции объекта
     glEnable(GL_DEPTH_TEST);
 }
 
 
-void glView::resizeGL(int w, int h)
+void glCubeView::resizeGL(int w, int h)
 {
     // Устанавливаем размер области просмотра как размер окна
     glViewport(0, 0, w, h);
@@ -30,13 +30,13 @@ void glView::resizeGL(int w, int h)
     glFrustum(-1, 1, -1, 1, 1, 3);
 }
 
-void glView::paintGL()
+void glCubeView::paintGL()
 {
     // Включаем буфер глубины, для корректной проекции объекта
     glEnable(GL_DEPTH_TEST);
 
     // Задаём цвет фона
-    glClearColor(0.25, 0.1, 0.5, 0);
+    glClearColor(0.25, 0.1, 0.5, 1);
 
     // Очищаем буфера цвета и глубины
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -58,12 +58,12 @@ void glView::paintGL()
 }
 
 // Обрабатываем нажатие мышкой и запоминаем позицию нажатия
-void glView::mousePressEvent(QMouseEvent* mo) {
+void glCubeView::mousePressEvent(QMouseEvent* mo) {
     mPos = mo->pos();
 }
 
 // Обрабатываем нажатие мышкой и получаем углы вращения в зависимости от перемещения мышкой от изначальной позиции
-void glView::mouseMoveEvent(QMouseEvent* mo) {
+void glCubeView::mouseMoveEvent(QMouseEvent* mo) {
     xRot = 1 / M_PI * (mo->pos().y() - mPos.y());
     yRot = 1 / M_PI * (mo->pos().x() - mPos.x());
     update();
@@ -71,7 +71,7 @@ void glView::mouseMoveEvent(QMouseEvent* mo) {
 
 
 // Функция отрисовки куба
-void glView::drawCube(float a)
+void glCubeView::drawCube(float a)
 {
     // Задаём вектор вершин куба
     float ver_cub[] = {

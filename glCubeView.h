@@ -1,10 +1,10 @@
-#ifndef GLVIEW_H
-#define GLVIEW_H
+#ifndef GLCUBEVIEW_H
+#define GLCUBEVIEW_H
 #include <QOpenGLWidget>
 #include <QMouseEvent>
 #include <QtMath>
 
-class glView : public QOpenGLWidget
+class glCubeView : public QOpenGLWidget
 {
     Q_OBJECT
 private:
@@ -18,8 +18,8 @@ private:
     void mousePressEvent(QMouseEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;
 public:
-    glView(QWidget *parent = nullptr);
-    ~glView();
+    glCubeView(QWidget *parent = nullptr);
+    ~glCubeView();
     void drawCube(float);
 };
-#endif // GLVIEW_H
+#endif // GLCUBEVIEW_H
