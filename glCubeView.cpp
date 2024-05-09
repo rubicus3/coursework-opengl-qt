@@ -54,7 +54,7 @@ void glCubeView::paintGL()
     glRotatef(yRot, 0, 1, 0);
 
     // Вызываем функцию отрисовки куба
-    drawCube(0.5);
+    drawTetra(0.5);
 }
 
 // Обрабатываем нажатие мышкой и запоминаем позицию нажатия
@@ -109,6 +109,39 @@ void glCubeView::drawCube(float a)
     glDisableClientState(GL_COLOR_ARRAY);
 }
 
+
+void glCubeView::drawTetra(float a) {
+    // Задаём вектор вершин тетраэдра
+    float ver_cub[] = {
+        -a, 0, a,  a, 0, a,  0, 1.5f * a,  0,
+        -a, 0, a,  a, 0, a,  0, 0, -a,
+        -a, 0, a,  0, 1.5f * a, 0,  0, 0, -a,
+         a, 0, a,  0, 1.5f * a, 0,  0, 0, -a,
+    };
+
+    // Задаём цвета граней тетраэдра
+    float color_arr[] = {
+        1, 0, 0,  1, 0, 0,  1, 0, 0,
+        1, 1, 0,  1, 1, 0,  1, 1, 0,
+        1, 0, 1,  1, 0, 1,  1, 0, 1,
+        0, 0, 1,  0, 0, 1,  0, 0, 1,
+    };
+
+    // Задаём матрицы вершин и цветов
+    glVertexPointer(3, GL_FLOAT, 0, &ver_cub);
+    glColorPointer(3, GL_FLOAT, 0, &color_arr);
+
+    // Включаем клиенту обработку массивов вершин и цветов
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+
+    // Отрисуем тетраэдра треугольными полигонами
+    glDrawArrays(GL_TRIANGLES, 0, 12);
+
+    // Выключаем клиенту обработку массивов вершин и цветов
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+}
 
 
 

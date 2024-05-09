@@ -21,5 +21,6 @@ public:
     glCubeView(QWidget *parent = nullptr);
     ~glCubeView();
     void drawCube(float);
+    void drawTetra(float);
 };
 #endif // GLCUBEVIEW_H
