@@ -1,4 +1,6 @@
 #include "glCubeView.h"
+#include<QDebug>
+
 
 glCubeView::glCubeView(QWidget *parent)
     : QOpenGLWidget(parent)
@@ -53,8 +55,9 @@ void glCubeView::paintGL()
     glRotatef(xRot, 1, 0, 0);
     glRotatef(yRot, 0, 1, 0);
 
-    // Вызываем функцию отрисовки куба
-    drawTetra(0.5);
+    // Вызываем функцию отрисовки в зависимости от состояния
+    if(state == State::Cube) drawCube(0.5);
+    else if(state == State::Tetra) drawTetra(0.5);
 }
 
 // Обрабатываем нажатие мышкой и запоминаем позицию нажатия
@@ -141,6 +144,14 @@ void glCubeView::drawTetra(float a) {
     // Выключаем клиенту обработку массивов вершин и цветов
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
+}
+
+void glCubeView::changeState(State state) {
+    this->state = state;
+    qInfo() << "Changing drawing state to: " << state;
+    xRot = 0;
+    yRot = 0;
+    update();
 }
 
 

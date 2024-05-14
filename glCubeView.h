@@ -4,10 +4,15 @@
 #include <QMouseEvent>
 #include <QtMath>
 
+
+
 class glCubeView : public QOpenGLWidget
 {
     Q_OBJECT
+public:
+    enum State {Cube, Tetra};
 private:
+    State state = State::Cube;
     float xRot, yRot, zRot;
     QPoint mPos;
 
@@ -22,5 +27,8 @@ public:
     ~glCubeView();
     void drawCube(float);
     void drawTetra(float);
+
+public slots:
+    void changeState(State state);
 };
 #endif // GLCUBEVIEW_H

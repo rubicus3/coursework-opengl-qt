@@ -17,6 +17,20 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
+      <widget class="QPushButton" name="changeToCube">
+       <property name="text">
+        <string>Cube</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="changeToTetra">
+       <property name="text">
+        <string>Tetra</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QListView" name="elementList"/>
      </item>
      <item>
@@ -41,6 +55,9 @@
    <class>glCubeView</class>
    <extends>QOpenGLWidget</extends>
    <header>glCubeView.h</header>
+   <slots>
+    <slot>changeState()</slot>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
