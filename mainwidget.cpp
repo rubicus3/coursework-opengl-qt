@@ -8,12 +8,28 @@ mainWidget::mainWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->changeToCube, &QPushButton::clicked, [=]() {
-        ui->openGLWidget->changeState(glCubeView::State::Cube);
+    connect(ui->toCubeBtn, &QPushButton::clicked, [=]() {
+        ui->openGLWidget->changeView(glCubeView::ObjectState::Cube);
     });
 
-    connect(ui->changeToTetra, &QPushButton::clicked, [=]() {
-        ui->openGLWidget->changeState(glCubeView::State::Tetra);
+    connect(ui->toTetraBtn, &QPushButton::clicked, [=]() {
+        ui->openGLWidget->changeView(glCubeView::ObjectState::Tetra);
+    });
+
+    connect(ui->toCircleBtn, &QPushButton::clicked, [=]() {
+        ui->openGLWidget->changeView(glCubeView::ObjectState::Circle);
+    });
+
+    connect(ui->toCylinderBtn, &QPushButton::clicked, [=]() {
+        ui->openGLWidget->changeView(glCubeView::ObjectState::Cylinder);
+    });
+
+    connect(ui->frustumBtn, &QPushButton::clicked, [=]() {
+        ui->openGLWidget->changeProjectionState(glCubeView::ProjectionState::Frustum);
+    });
+
+    connect(ui->orthoBtn, &QPushButton::clicked, [=]() {
+        ui->openGLWidget->changeProjectionState(glCubeView::ProjectionState::Ortho);
     });
 }
 
