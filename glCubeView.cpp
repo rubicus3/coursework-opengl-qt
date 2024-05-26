@@ -1,7 +1,6 @@
 #include "glCubeView.h"
-#include<QDebug>
+#include <QDebug>
 #include <QVector3D>
-#include<vector>
 
 
 glCubeView::glCubeView(QWidget *parent)
@@ -64,7 +63,7 @@ void glCubeView::paintGL()
     if(objectState == ObjectState::Cube) drawCube(0.5);
     else if(objectState == ObjectState::Tetra) drawTetra(0.5);
     else if(objectState == ObjectState::Circle)     drawCircle(1);
-    else if(objectState == ObjectState::Cylinder) {}
+    else if(objectState == ObjectState::Cylinder) drawCylinder(0.5);
 
 }
 
@@ -106,9 +105,6 @@ void glCubeView::changeProjectionState(ProjectionState state){
     projectionState = state;
     update();
 }
-
-
-
 
 // Функция отрисовки куба
 void glCubeView::drawCube(float a)
@@ -183,21 +179,89 @@ void glCubeView::drawTetra(float a) {
     glDisableClientState(GL_COLOR_ARRAY);
 }
 
+void glCubeView::drawCylinder(float radius) {
+    qInfo() << "\n\n Draw Cyilnder \n\n";
+    int n = 32;
+
+    std::vector<double> circle1 = getCircleArray(n, radius, 0, -0.5, 0);
+    std::vector<double> circle2 = getCircleArray(n, radius, 0, 0.5, 0);
+
+    std::vector<double> vertex_vec;
+
+    for(int i = 0; i < (n + 2) * 3; i++) {
+        vertex_vec.push_back(circle1[i]);
+    }
+
+    for(int i = 3; i < (n + 2) * 3; i+=3) {
+        vertex_vec.push_back(circle1[i]);
+        vertex_vec.push_back(circle1[i + 1]);
+        vertex_vec.push_back(circle1[i + 2]);
+
+        vertex_vec.push_back(circle2[i]);
+        vertex_vec.push_back(circle2[i + 1]);
+        vertex_vec.push_back(circle2[i + 2]);
+    }
+
+    for(int i = 0; i < (n + 2) * 3; i++) {
+        vertex_vec.push_back(circle2[i]);
+    }
+
+
+//    for(int i = 0; i < vertex_vec.size(); i += 3) {
+//        qInfo() << vertex_vec[i] << " " << vertex_vec[i + 1] << " " << vertex_vec[i + 2];
+//    }
+
+    std::vector<double> color_v;
+    for(int i = 0; i < n + 2; i++) {
+        color_v.push_back(0);
+        color_v.push_back(0);
+        color_v.push_back(1);
+    }
+
+    for(int i = 0; i < (n + 1); i++) {
+        color_v.push_back(0);
+        color_v.push_back(1);
+        color_v.push_back(1);
+    }
+
+    for(int i = (n + 1); i <  2 * (n + 1); i++) {
+        color_v.push_back(1);
+        color_v.push_back(0);
+        color_v.push_back(1);
+    }
+
+    for(int i = 0; i < n + 2; i++) {
+        color_v.push_back(1);
+        color_v.push_back(0);
+        color_v.push_back(0);
+    }
+
+    double* color_arr = color_v.data();
+    double* vertex_arr = vertex_vec.data();
+
+    glVertexPointer(3, GL_DOUBLE, 0, vertex_arr);
+    glColorPointer(3, GL_DOUBLE, 0, color_arr);
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+
+    glDrawArrays(GL_TRIANGLE_FAN, 0, n + 2);
+    glDrawArrays(GL_QUAD_STRIP, n + 2, 2 * (n + 1));
+    glDrawArrays(GL_TRIANGLE_FAN, 3 * n + 4, n + 2);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+
+}
+
 void glCubeView::drawCircle(float radius) {
-    int n = 16;
+    int n = 32;
 
-    double* ver = getCircleArray(n, radius, QVector3D(0, 0, 0));
+    std::vector<double> ver = getCircleArray(n, radius, 0, 0, 0);
 
-    std::vector<double> verv(ver, ver + n * 3);
 
-//    double ver[] = {
-//        0, 0, 0,
-//        0.5, 0, 0,
-//        0, 0.5, 0,
-//        -0.5, 0, 0,
-//        0, -0.5, 0,
-//        0.5, 0, 0
-//    };
+//    std::vector<double> verv(ver, ver + n * 3);
+
 
     std::vector<double> color_v;
     for(int i = 0; i < n + 2; i++) {
@@ -206,10 +270,12 @@ void glCubeView::drawCircle(float radius) {
         color_v.push_back(0);
     }
     double* color_arr = color_v.data();
+    double* vertex_arr = ver.data();
 
+    qInfo() << " \n\n\n" <<  ver[0] << " " << ver[1]  << " " << ver[2] <<  "\n\n\n";
 
     // Задаём матрицы вершин и цветов
-    glVertexPointer(3, GL_DOUBLE, 0, ver);
+    glVertexPointer(3, GL_DOUBLE, 0, vertex_arr);
     glColorPointer(3, GL_DOUBLE, 0, color_arr);
 
     // Включаем клиенту обработку массивов вершин и цветов
@@ -225,33 +291,32 @@ void glCubeView::drawCircle(float radius) {
 }
 
 
-double* glCubeView::getCircleArray(int n, double radius, QVector3D center) {
+std::vector<double> glCubeView::getCircleArray(int n, double radius, double x, double y, double z) {
 
-    std::vector<double> ver = { center.x(), center.y(), center.z()  };
+    std::vector<double> ver;
 
+    ver.push_back(x);
+    ver.push_back(y);
+    ver.push_back(z);
 
     double astep = 2 * M_PI / n; // Шаг прохода угла в радианах
 
-
     for(int i = 0; i <= n; i++) {
         double angle = astep * i;
-        ver.push_back(round(radius * cos(angle) * 10000000.0) / 10000000.0 + center.x()); // x
-        ver.push_back(round(radius * sin(angle) * 10000000.0) / 10000000.0 + center.y()); // y
-        ver.push_back(center.z());                   // z
+        ver.push_back(round(radius * cos(angle) * 1000.0) / 1000.0 + x); // x
+        ver.push_back(y);                                                        // y
+        ver.push_back(round(radius * sin(angle) * 1000.0) / 1000.0 + z); // z
     }
 //    ver.push_back(radius); // x
 //    ver.push_back(0);      // y
 //    ver.push_back(0);      // z
 
 
-    for(int i = 0; i < ver.size(); i+=3) {
-        qInfo() << ver[i] << " " << ver[i + 1] << " " << ver[i + 2];
-    }
+//    for(int i = 0; i < ver.size(); i+=3) {
+//        qInfo() << ver[i] << " " << ver[i + 1] << " " << ver[i + 2];
+//    }
 
-
-    double* v = ver.data();
-
-    return v;
+    return ver;
 }
 
 

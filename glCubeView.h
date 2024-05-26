@@ -3,6 +3,7 @@
 #include <QOpenGLWidget>
 #include <QMouseEvent>
 #include <QtMath>
+#include <vector>
 
 
 
@@ -25,7 +26,7 @@ private:
     void mousePressEvent(QMouseEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;
 
-    double* getCircleArray(int n, double radius, QVector3D center);
+    std::vector<double> getCircleArray(int n, double radius,  double x, double y, double z);
 
     void changeProjection();
 public:
@@ -34,6 +35,7 @@ public:
     void drawCube(float);
     void drawTetra(float);
     void drawCircle(float radius);
+    void drawCylinder(float radius);
 
 
 public slots:
