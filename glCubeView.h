@@ -16,8 +16,8 @@ public:
 private:
     ObjectState objectState = ObjectState::Cube;
     ProjectionState projectionState = ProjectionState::Frustum;
-    float xRot, yRot, zRot;
     QPoint mPos;
+    float xRot, yRot, zRot;
 
     void initializeGL() override;
     void resizeGL(int w, int h) override;
@@ -26,17 +26,16 @@ private:
     void mousePressEvent(QMouseEvent*) override;
     void mouseMoveEvent(QMouseEvent*) override;
 
-    std::vector<double> getCircleArray(int n, double radius,  double x, double y, double z);
-
+    void drawCube(float radius);
+    void drawTetra(float radius);
+    void drawCircle(float radius);
+    void drawCylinder(float radius);
     void changeProjection();
+
+    std::vector<double> getCircleArray(int n, double radius,  double x, double y, double z);
 public:
     glCubeView(QWidget *parent = nullptr);
     ~glCubeView();
-    void drawCube(float);
-    void drawTetra(float);
-    void drawCircle(float radius);
-    void drawCylinder(float radius);
-
 
 public slots:
     void changeView(ObjectState state);
